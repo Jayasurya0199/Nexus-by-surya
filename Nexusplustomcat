@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+    tools {
+        maven 'maven3'
+    }
+    stages {
+        stage('Git Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/KastroVKiran/Nexus-Demo.git'
+            }
+        }
+        stage('Compile') {
+            steps {
+                sh 'mvn compile'
+            }
+        }
+        stage('Tests') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'mvn package'
+            }
+        }
+        stage('Deploy to Tomcat') {
+           steps {
+                sh '''
+               sudo cp /var/lib/jenkins/workspace/nexbuild/target/database_service_project-0.0.6.jar /home/ubuntu/apache-tomcat/webapps/
+               sudo chown ubuntu:ubuntu /home/ubuntu/apache-tomcat/webapps/database_service_project-0.0.6.jar
+              '''
+           }
+        }
+        stage('Deploy Artifacts') {
+            steps {
+                withMaven(globalMavenSettingsConfig: 'settings.xml', jdk: 'jdk17', maven: 'maven3', mavenSettingsConfig: '', traceability: true) {
+                    sh 'mvn deploy'
+                }
+            }
+        }
+    }
+}
+
+---> Apply ---> Save ---> Build the job
