@@ -34,3 +34,8 @@ echo "Updating package list after adding Docker repository..."
 sudo apt-get update
 
 echo "Docker repository successfully added!"
+
+
+after sh dile 
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
