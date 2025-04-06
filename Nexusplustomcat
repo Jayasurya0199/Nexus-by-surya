@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-                https://github.com/Jayasurya0199/Nexus-Demo.git
+                git branch: 'main', url: 'https://github.com/Jayasurya0199/Nexus-Demo.git'
             }
         }
         stage('Compile') {
